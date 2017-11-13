@@ -15,7 +15,10 @@
     <version>0.0-SNAPSHOT</version>
 
     <properties>
+        <!-- General project settings -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
 
         <!-- Dependencies versions -->
         <commons-lang.version>3.6</commons-lang.version>
@@ -61,6 +64,16 @@
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-spring-boot</artifactId>
             <version>2.20.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.hekonsek</groupId>
+            <artifactId>json4dummies</artifactId>
+            <version>0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.16</version>
         </dependency>
 
         <dependency>

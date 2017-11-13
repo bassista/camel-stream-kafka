@@ -11,13 +11,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.HashMap;
+import static json4dummies.Json.fromJson;
+import static json4dummies.Json.toJson;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = CamelStreamKafkaBindingSpringTest.Config.class,
         properties = { "camel.stream.kafka.brokers=localhost:9092",
                 "camel.stream.kafka.pipe.mypipe.from=from",
-                "camel.stream.kafka.pipe.mypipe.bean=myPipeProcessor",
+                "camel.stream.kafka.pipe.mypipe.bean=deviceEventsProcessor",
                 "camel.stream.kafka.pipe.mypipe.to=to" })
 public class CamelStreamKafkaBindingSpringTest {
 
@@ -26,7 +27,8 @@ public class CamelStreamKafkaBindingSpringTest {
     @Test
     public void should() throws InterruptedException {
         Thread.sleep(5000);
-        producer.sendBody("kafka:from?brokers=localhost:9092", new HashMap());
+        String device = toJson(new Device());
+        producer.sendBody("kafka:from?brokers=localhost:9092", device);
     }
 
     @SpringBootApplication
@@ -37,12 +39,12 @@ public class CamelStreamKafkaBindingSpringTest {
             return new CamelStreamKafkaBinding(camelContext, "mypipe");
         }
 
-        @Component("myPipeProcessor")
-        static public class MyPipeProcessor {
+        @Component("deviceEventsProcessor")
+        static public class DeviceProcessor {
 
             public String process(String event) {
-                System.out.println(event);
-                return event;
+                Device device = fromJson(event, Device.class);
+                return toJson(device);
             }
 
         }
